@@ -1,4 +1,4 @@
-use crate::constants::TOKEN_ADDRESSES;
+use crate::constants::{CBBTC_ADDRESS, TOKEN_ADDRESSES, TRANSFER_EVENT_TOPIC};
 use crate::execute_swap::execute_swap;
 
 use alloy::{
@@ -12,10 +12,9 @@ use tokio::time::{Duration, sleep};
 #[tokio::main]
 pub async fn indxer() {
     env_logger::init();
-    let address = Address::parse_checksummed("0x6DAeA3e8e328D157bb1ed76aF69F164B87490949", None)
-        .expect("invalid address");
 
-    let contract_address = B256::left_padding_from(address.as_slice());
+    let contract_address = B256::left_padding_from(CBBTC_ADDRESS.as_slice());
+
     // create default client, uses eth mainnet
     let client = Client::new(ClientConfig {
         url: Some(Url::from_str("https://base.hypersync.xyz").unwrap()),
@@ -30,8 +29,6 @@ pub async fn indxer() {
 
     let height = client.get_height().await.unwrap();
 
-    let trasnfer_event_topic = "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef";
-
     println!("server height is {height}");
 
     // The query to run
@@ -44,7 +41,7 @@ pub async fn indxer() {
                 "address": TOKEN_ADDRESSES,
                 // We only want transfer events
                 "topics": [
-                    [trasnfer_event_topic],
+                    [TRANSFER_EVENT_TOPIC],
                     [],
                     [contract_address]
                 ]

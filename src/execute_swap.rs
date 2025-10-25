@@ -33,7 +33,7 @@ async fn execute(swapswap_contract: Address, quote_result: buildBestSwapReturn) 
                 Err(e) => println!("execution error: {:#?}", e),
             }
         }
-        Err(e) => println!("error: {}", e),
+        Err(e) => println!("gas estimation error: {}", e),
     }
 }
 
@@ -50,19 +50,21 @@ pub async fn execute_swap(
         .await
         .unwrap()
         .unwrap();
-    let timestamp = block.header.timestamp;
 
-    let slippage_bps = U256::from(100);
+    let timestamp = block.header.timestamp;
+    let slippage_bps = U256::from(500);
     let exact_out = false;
     let deadline = U256::from(timestamp + 1800);
+
     let z_quoter_instance = IzQuoter::new(Z_QUOTER_ADDRESS, provider_instance());
+
     let swapswap_instance = ISwapSwap::new(swapswap_contract, provider_instance());
 
     let token_out = swapswap_instance.i_token().call().await.unwrap();
 
     println!(
-        "getting quote for user {} for token {} from {} USDC ",
-        user, token_out, swap_amount
+        "getting quote for user {} for token {} from {} token with token amount {} ",
+        user, token_out, token_in, swap_amount
     );
 
     let quote_gen_call = z_quoter_instance

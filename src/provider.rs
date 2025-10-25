@@ -2,6 +2,7 @@ use std::str::FromStr;
 
 use alloy::{
     providers::{ProviderBuilder, fillers::FillProvider},
+    rpc::client::ClientBuilder,
     signers::local::PrivateKeySigner,
     transports::http::reqwest::Url,
 };
@@ -31,7 +32,9 @@ pub fn provider_instance() -> FillProvider<
 
     let rpc_url = Url::from_str(&rpc_url()).unwrap();
 
-    let provider = ProviderBuilder::new().wallet(signer).connect_http(rpc_url);
+    let client = ClientBuilder::default().http(rpc_url);
+
+    let provider = ProviderBuilder::new().wallet(signer).connect_client(client);
 
     provider
 }

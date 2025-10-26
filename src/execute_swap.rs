@@ -1,4 +1,6 @@
-use crate::constants::Z_QUOTER_ADDRESS;
+use std::str::FromStr;
+
+use crate::constants::{USDC_ADDRESS, Z_QUOTER_ADDRESS};
 use crate::interfaces::{IzQuoter::buildBestSwapReturn, *};
 use crate::provider::provider_instance;
 
@@ -60,7 +62,15 @@ pub async fn execute_swap(
 
     let swapswap_instance = ISwapSwap::new(swapswap_contract, provider_instance());
 
-    let token_out = swapswap_instance.i_token().call().await.unwrap();
+    let i_token = swapswap_instance.i_token().call().await.unwrap();
+
+    let token_out: Address;
+
+    if i_token == token_in {
+        token_out = Address::from_str(USDC_ADDRESS).unwrap();
+    } else {
+        token_out = i_token;
+    }
 
     println!(
         "getting quote for user {} for token {} from {} token with token amount {} ",

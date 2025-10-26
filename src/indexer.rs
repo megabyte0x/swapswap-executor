@@ -1,4 +1,4 @@
-use crate::constants::{CBBTC_ADDRESS, TOKEN_ADDRESSES, TRANSFER_EVENT_TOPIC};
+use crate::constants::{CBBTC_SWAPSWAP_ADDRESS, TOKEN_ADDRESSES, TRANSFER_EVENT_TOPIC};
 use crate::execute_swap::execute_swap;
 
 use alloy::{
@@ -13,9 +13,8 @@ use tokio::time::{Duration, sleep};
 pub async fn indxer() {
     env_logger::init();
 
-    let contract_address = B256::left_padding_from(CBBTC_ADDRESS.as_slice());
+    let contract_address = B256::left_padding_from(CBBTC_SWAPSWAP_ADDRESS.as_slice());
 
-    // create default client, uses eth mainnet
     let client = Client::new(ClientConfig {
         url: Some(Url::from_str("https://base.hypersync.xyz").unwrap()),
         bearer_token: None,

@@ -19,7 +19,7 @@ pub const CBBTC_SWAPSWAP_ADDRESS: Address = address!("0x6DAeA3e8e328D157bb1ed76a
 pub const Z_QUOTER_ADDRESS: Address = address!("0x772E2810A471dB2CC7ADA0d37D6395476535889a");
 
 pub fn private_key() -> String {
-    var("PRIVATE_KEY").expect("env PRIVATE_KEY missing")
+    var("EXECUTOR_PRIVATE_KEY").expect("env EXECUTOR_PRIVATE_KEY missing")
 }
 
 pub fn rpc_url() -> String {

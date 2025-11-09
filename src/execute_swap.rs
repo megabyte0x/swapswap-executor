@@ -62,14 +62,16 @@ pub async fn execute_swap(
 
     let swapswap_instance = ISwapSwap::new(swapswap_contract, provider_instance());
 
-    let i_token = swapswap_instance.i_token().call().await.unwrap();
+    let params = swapswap_instance.initParams().call().await.unwrap();
+
+    let token = params.token;
 
     let token_out: Address;
 
-    if i_token == token_in {
+    if token == token_in {
         token_out = Address::from_str(USDC_ADDRESS).unwrap();
     } else {
-        token_out = i_token;
+        token_out = token;
     }
 
     println!(

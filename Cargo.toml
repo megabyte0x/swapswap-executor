@@ -11,8 +11,8 @@ alloy.workspace = true
 hypersync-client.workspace = true
 tokio.workspace = true
 serde_json.workspace=true
-env_logger = "0.11.8"
-dotenvy = "0.15.7"
+env_logger.workspace = true
+dotenvy.workspace = true
 
 [lints]
 workspace = true
